@@ -16,6 +16,8 @@ from sc2_agents.v2.main_agent import MAX_MAIN_ROUNDS as V2_MAX_MAIN_ROUNDS
 from sc2_agents.v2.sub_agent import MAX_SUB_TOOL_ROUNDS as V2_MAX_SUB_TOOL_ROUNDS
 from sc2_agents.v2_1.main_agent import MAX_MAIN_ROUNDS as V2_1_MAX_MAIN_ROUNDS
 from sc2_agents.v2_1.sub_agent import MAX_SUB_TOOL_ROUNDS as V2_1_MAX_SUB_TOOL_ROUNDS
+from sc2_agents.v2_2.main_agent import MAX_MAIN_ROUNDS as V2_2_MAX_MAIN_ROUNDS
+from sc2_agents.v2_2.sub_agent import MAX_SUB_TOOL_ROUNDS as V2_2_MAX_SUB_TOOL_ROUNDS
 from API_Tools.rate_limiter import DEFAULT_KIMI_RPM, KIMI_PROVIDER_MAX_RPM
 
 from .answer_runners import run_answer
@@ -102,6 +104,8 @@ class EvaluationExperiment:
                     "v2_sub_tool_rounds": V2_MAX_SUB_TOOL_ROUNDS,
                     "v2_1_main_rounds": V2_1_MAX_MAIN_ROUNDS,
                     "v2_1_sub_tool_rounds": V2_1_MAX_SUB_TOOL_ROUNDS,
+                    "v2_2_main_rounds": V2_2_MAX_MAIN_ROUNDS,
+                    "v2_2_sub_tool_rounds": V2_2_MAX_SUB_TOOL_ROUNDS,
                 },
                 "provider_rate_limits": {
                     "kimi_default_rpm": DEFAULT_KIMI_RPM,

@@ -904,6 +904,19 @@ def run_agent(
     agent_version: str = "v1",
 ) -> dict[str, Any]:
     normalized_version = agent_version.lower().strip()
+    if normalized_version in {"v2.2", "v2_2"}:
+        from sc2_agents.v2_2.agent import run_agent as run_v2_2_agent
+
+        return run_v2_2_agent(
+            user_query,
+            provider=provider,
+            model=model,
+            data_path=data_path,
+            dry_run=dry_run,
+            enable_reasoning=enable_reasoning,
+            response_language=response_language,
+            log_dir=log_dir,
+        )
     if normalized_version in {"v2.1", "v2_1"}:
         from sc2_agents.v2_1.agent import run_agent as run_v2_1_agent
 
@@ -931,7 +944,7 @@ def run_agent(
             log_dir=log_dir,
         )
     if normalized_version != "v1":
-        raise ValueError(f"Unknown agent_version: {agent_version}. Expected 'v1', 'v2', or 'v2.1'.")
+        raise ValueError(f"Unknown agent_version: {agent_version}. Expected 'v1', 'v2', 'v2.1', or 'v2.2'.")
     recorder = TraceRecorder(user_query, log_dir=log_dir)
     llm_trace: list[dict[str, Any]] = []
     result: dict[str, Any] | None = None
@@ -1138,7 +1151,7 @@ def main() -> None:
     parser.add_argument("--language", default="English")
     parser.add_argument("--show-reasoning", action="store_true")
     parser.add_argument("--show-tools", action="store_true")
-    parser.add_argument("--agent-version", choices=["v1", "v2", "v2.1"], default="v2")
+    parser.add_argument("--agent-version", choices=["v1", "v2", "v2.1", "v2.2"], default="v2")
     args = parser.parse_args()
     provider_cfg = resolve_provider_config(args.provider)
     enable_reasoning = args.reasoning or (

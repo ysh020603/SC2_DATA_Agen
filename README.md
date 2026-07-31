@@ -24,8 +24,9 @@ The repository now contains three selectable Agent implementations:
 - **V1** preserves the original context-router, planner, deterministic retrieval, and final-answer pipeline. Its explicit entry point is `sc2_agents.v1.run_agent`.
 - **V2** uses a tool-isolated MainAgent and a fresh DataSubAgent session for every focused subquestion. MainAgent never receives tool schemas or raw tool results. DataSubAgent first selects a small tool set from an English catalog, then uses native OpenAI-compatible tool calls with full schemas.
 - **V2.1** is an isolated copy of V2 under `sc2_agents.v2_1` with stronger English context for candidate roles, weakly constrained questions, field mapping, production-output coverage, and best-effort answers. It raises the MainAgent limit to 20 rounds while leaving V1 and V2 unchanged.
+- **V2.2** is an isolated copy of V2.1 under `sc2_agents.v2_2`. It preserves complete raw traces while hiding opaque evidence hashes from model-visible tool results, replacing expandable relations and facts with short session-local references.
 
-All static V2 and V2.1 prompts, contexts, and tool descriptions are English. The answer language remains configurable. See [docs/AGENT_VERSIONS.md](docs/AGENT_VERSIONS.md) for architecture and test commands.
+All static V2, V2.1, and V2.2 prompts, contexts, and tool descriptions are English. The answer language remains configurable. See [docs/AGENT_VERSIONS.md](docs/AGENT_VERSIONS.md) for architecture and test commands.
 
 ## Repository layout
 
@@ -328,7 +329,7 @@ Useful CLI options:
 --dry-run                    deterministic tools only
 --show-reasoning             print the captured reasoning trace
 --show-tools                 print plans and complete tool results
---agent-version              v1, v2, or v2.1; the CLI defaults to v2
+--agent-version              v1, v2, v2.1, or v2.2; the CLI defaults to v2
 ```
 
 Every invocation prints its run ID and canonical trace path.
@@ -422,7 +423,7 @@ The trace records:
 - model key, model name, latency, usage, and finish reason;
 - fallback and failure events.
 
-V1 writes `sc2-agent-trace-v1`. V2 writes `sc2-agent-trace-v2`. V2.1 writes `sc2-agent-trace-v2.1`. V2 and V2.1 additionally record MainAgent decisions, DataSubAgent session boundaries, two-stage tool selection, native tool messages, compressed SubAgent replies, and transient API retries.
+V1 writes `sc2-agent-trace-v1`. V2 writes `sc2-agent-trace-v2`. V2.1 writes `sc2-agent-trace-v2.1`. V2.2 writes `sc2-agent-trace-v2.2`. V2, V2.1, and V2.2 additionally record MainAgent decisions, DataSubAgent session boundaries, two-stage tool selection, native tool messages, compressed SubAgent replies, and transient API retries.
 
 Keys whose names resemble credentials, authorization values, tokens, secrets, or passwords are redacted before serialization. API keys and authorization headers are never deliberately included in request metadata.
 

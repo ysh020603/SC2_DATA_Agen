@@ -243,7 +243,7 @@ Reasoning modes are:
 
 Only reasoning exposed by the provider is stored. If no reasoning field or tag is returned, the record contains `reasoning_available: false`.
 
-`agent_version` is required to be `v1`, `v2`, or `v2.1` in Agent mode. It is ignored by Plain answer generation.
+`agent_version` is required to be `v1`, `v2`, `v2.1`, or `v2.2` in Agent mode. It is ignored by Plain answer generation.
 
 ## Validate without API calls
 
@@ -285,7 +285,7 @@ python -m SC2_QA.evaluation.cli `
   --agent-version v2
 ```
 
-Run the same configuration through another agent version by changing the final override to `--agent-version v1`, `--agent-version v2`, or `--agent-version v2.1`. V1, V2, and V2.1 produce separate experiment IDs and must be run as independent experiments.
+Run the same configuration through another agent version by changing the final override to `--agent-version v1`, `--agent-version v2`, `--agent-version v2.1`, or `--agent-version v2.2`. Each version produces a separate experiment ID and must be run as an independent experiment.
 
 ### Three-case V2 Kimi smoke test
 

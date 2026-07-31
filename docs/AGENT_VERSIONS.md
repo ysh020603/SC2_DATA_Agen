@@ -1,8 +1,8 @@
-# SC2 Agent V1, V2, and V2.1
+# SC2 Agent V1, V2, V2.1, and V2.2
 
 ## Version overview
 
-V1, V2, and V2.1 share the active SC2 dataset, deterministic query engine, provider configuration, and QA evaluator. They differ only in LLM orchestration and version-local prompts, context, and wrappers.
+V1, V2, V2.1, and V2.2 share the active SC2 dataset, deterministic query engine, provider configuration, and QA evaluator. They differ only in LLM orchestration and version-local prompts, context, and wrappers.
 
 ### V1
 
@@ -63,6 +63,12 @@ V2.1 adds version-local English context and generic robustness improvements:
 
 V2.1 intentionally avoids test-case-specific answer rules. When a question is genuinely ambiguous, V2.1 should answer in detail rather than forcing a single unsupported endpoint.
 
+### V2.2
+
+V2.2 is an isolated copy of V2.1 under `sc2_agents/v2_2`. Raw tool results remain complete in logs and returned traces, while the DataSubAgent receives a compact model view with opaque relation, source, fact, origin, split, and expansion hashes removed.
+
+Expandable relations and facts receive short session-local references such as `R1` and `F1`. Once a reference exists, the evidence expansion tool is enabled automatically. Version-local context instructs the DataSubAgent to expand only when required provenance is absent, results conflict, or compaction removed the needed evidence.
+
 ## Command-line usage
 
 Run V2:
@@ -92,7 +98,7 @@ python sc2_agent.py "Which structure researches Stimpack?" `
   --reasoning-mode off
 ```
 
-The CLI defaults to V2. The root Python compatibility function accepts `agent_version="v1"`, `agent_version="v2"`, or `agent_version="v2.1"`; its default remains V1 to avoid silently changing existing integrations.
+The CLI defaults to V2. The root Python compatibility function accepts `agent_version="v1"`, `agent_version="v2"`, `agent_version="v2.1"`, or `agent_version="v2.2"`; its default remains V1 to avoid silently changing existing integrations.
 
 ## Python usage
 
@@ -131,7 +137,7 @@ The tests verify catalog/dispatcher parity, native tool schemas, English-only V2
 
 ## QA evaluation
 
-The QA evaluator has an `agent_version` field and a matching `--agent-version` override. Run V1, V2, and V2.1 as separate experiments so each version retains independent traces and reports.
+The QA evaluator has an `agent_version` field and a matching `--agent-version` override. Run every agent version as a separate experiment so each version retains independent traces and reports.
 
 ### Kimi request limit and concurrency
 
@@ -176,7 +182,7 @@ python -m SC2_QA.evaluation.cli `
   --agent-version v1
 ```
 
-For a full 60-case comparison, create separate V1, V2, and V2.1 configurations with empty `ids` and `limit: null`, then run each configuration independently. Compare their generated `summary.json` files. Do not reuse one experiment directory across versions.
+For a full 60-case comparison, create a separate configuration for each agent version with empty `ids` and `limit: null`, then run each configuration independently. Compare their generated `summary.json` files. Do not reuse one experiment directory across versions.
 
 ## Verified Kimi smoke run
 
